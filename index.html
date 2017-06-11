@@ -1,119 +1,164 @@
 <html>
 	<head>
+		<meta charset="UTF-8">
 		<script src="js/functions.js"></script>
-		<title>My first three.js app</title>
-		<style>
-			body { margin: 0; 	overflow: hidden;}
-			canvas { width: 100%; height: 100% }
-			#cameraPos{position: absolute; color: white; margin: 4px;}
-			.selector{position: absolute; background: red; left: 80%; top: 2%;}
-		</style>
+		<title>Saturn THREE.js </title>
+		<link rel="stylesheet" type="text/css" href="css/style.css">
+		
 	</head>
-	<h4 id="cameraPos">camera Position:</h4>
-	<div class="selector">
-		<input oninput="selectSpeed()" id="speedSelector" type="range" id="myRange" value="50">
+	
+	<audio src="music/interstellar.m4a" autoplay>
+		<p>If you are reading this, it is because your browser does not support the audio element.     </p>
+	</audio>
+
+	
+	<div class="selector" id="statsDiv">
+		<h4 id="cameraPos">camera Position:</h4>
+		<h4 id="particlesInfo">Particles per ring: </h4>
+		speed<input oninput="selectSpeed()" id="speedSelector" type="range" id="myRange" value="20"><br>
+		bkg<input oninput="selectBg()" id="bgSelector" type="range" id="myRange" value="100"><br>
+		<button onclick="hidePlane()"> Plane </button>
+		<button onclick="hideAxis()"> Axis </button>
+		<button onclick="changeBackground()"> bkg </button>
 	</div>
-	<body onload="selectSpeed()">
+	<div id="infos">
+		<span id="infosHide" onclick="hideInfos()">▶</span>
+		<h3 id="infosTitle">Saturn</h3>
+		<p id="infosContent"> 
+			Saturn is the sixth planet from the Sun and the second-largest in the Solar System, after Jupiter. It is a gas giant with an average radius about nine times that of Earth.[11][12] Although it has only one-eighth the average density of Earth, with its larger volume Saturn is just over 95 times more massive.[13][14][15] Saturn is named after the Roman god of agriculture; its astronomical symbol (♄) represents the god's sickle.<br>
+			Saturn's interior is probably composed of a core of iron–nickel and rock (silicon and oxygen compounds). This core is surrounded by a deep layer of metallic hydrogen, an intermediate layer of liquid hydrogen and liquid helium, and finally outside the Frenkel line a gaseous outer layer.[16] Saturn has a pale yellow hue due to ammonia crystals in its upper atmosphere. Electrical current within the metallic hydrogen layer is thought to give rise to Saturn's planetary magnetic field, which is weaker than Earth's, but has a magnetic moment 580 times that of Earth due to Saturn's larger size. Saturn's magnetic field strength is around one-twentieth of Jupiter's.[17] The outer atmosphere is generally bland and lacking in contrast, although long-lived features can appear. Wind speeds on Saturn can reach 1,800 km/h (500 m/s), higher than on Jupiter, but not as high as those on Neptune.[18]
+		</p>
+	</div>
+	<body id="body" onload="selectSpeed()">
 		
 		<script type="x-shader/x-vertex" id="vertexShaderSaturn">
 		uniform float delta;
 		uniform float radius;
-		varying vec3 vUv;
+		varying vec2 vUv;
+		varying vec4 culo;
 
-		uniform float bumpScale;
 		uniform float time;
 		uniform sampler2D texture;
 
 		void main() 
 		{	
-			vec2 uvTimeShift = vUv.xy + vec2( 1.1, 1.9 ) * time * 0.15;
-			vec4 bumpData = texture2D( texture, uvTimeShift);
-
-			float displacement = ( vUv.y > 0.999 || vUv.y < 0.001 ) ? 
-		    bumpScale * (0.3 + 0.02 * sin(time)) :  
-		    bumpScale * bumpData.r;
-		    vec3 newPosition = position + normal * displacement;
-
-		    vUv = position;
-		    		    
+		    vUv = uv;
+		    vUv.x = mod(vUv.x + time/5.0, 1.50);
+		    vec3 newPosition = position;
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
+			culo = vec4(newPosition, 1.0);
 		}
 		</script>
 		<script type="x-shader/x-fragment" id="fragmentShaderSaturn">
 
-		varying vec3 vUv;
+		varying vec2 vUv;
+		varying vec4 culo;
 		uniform sampler2D texture;
-		uniform vec2 tile;
-
+		
 		void main() {
+			vec4 baseColor = texture2D( texture, vUv.xy );
 
-			// Fragment coords
-			vec2 xy = vUv.xy;
-			// Tile coords
-			vec2 phase = fract(xy / tile);
-			//Multiply color by texture
-			//vec4 outColor = gl_Color * texture2D(texture, phase);
-			// Output fragment color
-			//gl_FragColor = outColor;
-			gl_FragColor = texture2D(texture, xy);
+			vec4 theColor = baseColor ;
+			theColor.a = 1.0;
+			if(culo.z < 0.0){
+				theColor.x += culo.z/20.0;
+				theColor.y += culo.z/20.0;
+				theColor.z += culo.z/20.0;
+			}
+			gl_FragColor = theColor;
 		}
 		</script>
 
 		<script type="x-shader/x-vertex" id="vertexShaderDEBRIS">
-		uniform float delta;
-		uniform float radius;
-		uniform float time;
+			attribute float base_angle;
+			attribute float offsetX;
+			attribute float offsetZ;
+			
+			uniform vec3 stretch;
+			uniform float time;
 
-		varying vec3 vUv;
-
-		void main() 
-		{
-		    float offset = 100.0;
-		    vec3 p = position;
-		    
-	        p.x += (time*0.3+200.0)*cos(time);
-	        p.z += (time*0.03+120.0)*sin(time);
-	        p.y += (time*0.03+35.0)*cos(time);
-		    
-			gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-
-		    vUv = position;
-		}
-		</script>
-		<script type="x-shader/x-fragment" id="fragmentShaderDEBRIS">
-			varying vec3 vUv;
-			uniform sampler2D texture;
-			void main() {
-				gl_FragColor = texture2D(texture, vUv.xy);
+			varying vec4 vUv;
+			varying vec2 offset;
+			void main() 
+			{
+			    vec3 p = position;
+			   	offset = vec2(offsetX, offsetZ);
+		        p.x = (stretch.x + offsetX)*cos( base_angle + time );
+		        p.z = (stretch.z + offsetZ)*sin( base_angle + time );
+		        p.y += (stretch.y + offsetX/10.0)*cos( base_angle + time );
+			    
+				gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
+			    
+			    vUv = projectionMatrix  * vec4(p, 1.0);
+			    gl_PointSize = 1.0;
 			}
 		</script>
-		<script type="x-shader/x-vertex" id="vertexShaderDEBRIS2">
+		<script type="x-shader/x-fragment" id="fragmentShaderDEBRIS">
+			
+			float rand(vec2 co){
+			    return fract(sin(dot(co.xy ,vec2(12.9898,78.233))) * 43758.5453);
+			}
+			varying vec4 vUv;
+			varying vec2 offset;
+
+			void main() {
+				if( abs(offset.x) >= 30.0 || abs(offset.y) >= 10.0)
+					gl_FragColor = vec4(0.7, 0.7, 0.65, 0.90);
+				else
+					gl_FragColor = vec4(0.58, 0.49, 0.45, 0.90);
+			}
+		</script>
+		
+		<script type="x-shader/x-vertex" id="vertexShaderTITANO">
 		uniform float delta;
 		uniform float radius;
 		uniform float time;
 
-		varying vec3 vUv;
+		varying vec4 vUv;
 
 		void main() 
 		{
-		    float offset = 100.0;
 		    vec3 p = position;
 		    
-	        p.x += (time*0.3+260.0)*cos(time);
-	        p.z += (time*0.03+180.0)*sin(time);
-	        p.y += (time*0.03+50.0)*cos(time);
+	        p.x += (time*0.03+120.0)*cos(time);
+	        p.z += (time*0.03+120.0)*sin(time);
+	        p.y += 100.0;
 		    
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 
-		    vUv = position;
+		    vUv = vec4(p, 1.0);
+		}
+		</script>
+		<script type="x-shader/x-fragment" id="fragmentShaderTITANO">
+
+		varying vec4 vUv;
+		uniform sampler2D texture;
+		uniform vec2 tile;
+
+		void main() {
+			float R = 0.913 + (cos(vUv.y/10.0))/6.0;
+			float G = 0.78 + (cos(vUv.y/10.0))/6.0;
+			float B = 0.38 + (cos(vUv.y/10.0))/6.0;
+			if(vUv.z > 0.0)
+				gl_FragColor = vec4(R, G, B, 1.0);
+			else
+				gl_FragColor = vec4(R+vUv.z*0.05, G+vUv.z*0.05, B+vUv.z*0.05, 1.0);
 		}
 		</script>
 		
 
 		<script src="js/three.js"></script>
+		<script src="js/libs/stats.min.js"></script>
 		<script src="js/OrbitControls.js"></script>
-		<script src="js/Tween.js"></script>
+		<script src="js/infos.js"></script>
 		<script src="js/functions.js"></script>
 		<script src="js/main.js"></script>
+		<script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+  		<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+  		<script type="text/javascript">
+  			  $( function() {
+			    $( "#statsDiv" ).draggable();
+			  } );
+  		</script>
 	</body>
 </html>

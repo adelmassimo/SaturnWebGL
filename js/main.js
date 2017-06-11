@@ -1,95 +1,92 @@
 document.body.appendChild( renderer.domElement );
 
-
-
-var saturnTexture = textureLoader.load("img/saturn.jpg");
-saturnTexture.wrapT = saturnTexture.wrapS = THREE.RepeatWrapping;
-var debrisTexture2 = textureLoader.load("img/lava.jpg");
-debrisTexture2.wrapT = debrisTexture2.wrapS = THREE.RepeatWrapping;
-var debrisTexture = textureLoader.load("img/debris.jpg");
-debrisTexture.wrapT = debrisTexture.wrapS = THREE.RepeatWrapping;
-
-
-var saturnUniforms ;
-var debrisUniforms ;
+// _________________________________________________________________________________ Begin Saturn Material
 var saturnMaterial = new THREE.ShaderMaterial({
     uniforms: saturnUniforms = {
-        tile: {value: new THREE.Vector2(512.0, 512.0)},
-        texture: { type: 't', value: saturnTexture },
-        radius: {value: 40.0},
-        bumpScale: {value: 40.0},
+        texture: { type: 't', value: textureLoader.load("img/saturn.jpg") },
         time: {value: 1.0}
     },
     vertexShader: document.getElementById('vertexShaderSaturn').textContent,
     fragmentShader: document.getElementById('fragmentShaderSaturn').textContent,
 });
+// __________________________________________________________ End Saturn Material
+// _________________________________________________________________________________ Begin Titano Material
+var titanoMaterial = new THREE.ShaderMaterial({
+    uniforms: titanoUniforms = {
+        texture: { type: 't', value: textureLoader.load("img/titano.jpg") },
+        time: {value: 1.0}
+    },
+    vertexShader: document.getElementById('vertexShaderTITANO').textContent,
+    fragmentShader: document.getElementById('fragmentShaderTITANO').textContent,
+});
+// __________________________________________________________ End Titano Material
+// _________________________________________________________________________________ Begin Ring Geometry
+var ringGeometry = new THREE.BufferGeometry();
+    thetas = new Float32Array(n);
+    delayX = new Float32Array(n);
+    delayZ = new Float32Array(n);
 
+for(i = 0; i < n; i++){
+    var theta = Math.random()*2*Math.PI;
 
-
-    var light = new THREE.DirectionalLight( 0xffffff );
-    light.position.set( 0, 1, 1 ).normalize();
-    scene.add(light);
-  
-
-var debrisMaterials = new Array();
-var debrisUniformss = new Array();
-for(i = 0; i < n/2; i++){
-    debrisUniformss.push({
-            texture: { type: 't', value: debrisTexture },
-            radius: {value: 1.0},
-            time: {value: 1.0*(i)}
-        });
-
-     debrisMaterials.push( new THREE.ShaderMaterial({
-        uniforms: debrisUniformss[i],
-        vertexShader: document.getElementById('vertexShaderDEBRIS').textContent,
-        fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,
-    })
-    )
-    absteroids.push( new THREE.Mesh(  new THREE.SphereGeometry( 1 ), debrisMaterials[i] ) );
-
-    absteroids[i].position.x = 0;
-    absteroids[i].position.y = 0;
-    absteroids[i].position.z = 0;
-    scene.add( absteroids[i] );
-
+    thetas[i] = theta;
+    delayX[i] = (Math.random()-0.5)*80;
+    delayZ[i] = (Math.random()-0.5)*30;
 }
 
-for(i = n/2; i < n; i++){
-    debrisUniformss.push({
-            texture: { type: 't', value: debrisTexture2 },
-            radius: {value: 1.0},
-            time: {value: 1.0*(i)}
-        });
+ringGeometry.addAttribute('base_angle', new THREE.BufferAttribute(thetas, 1))
+                .addAttribute('offsetX', new THREE.BufferAttribute(delayX, 1))
+                .addAttribute('offsetZ', new THREE.BufferAttribute(delayZ, 1))
+                .addAttribute('position', new THREE.BufferAttribute(new Float32Array(n*3), 3));
+// __________________________________________________________ End Ring Geometry
+// _________________________________________________________________________________ Begin Rings Material
+var externalRingMaterial= new THREE.ShaderMaterial({
+    uniforms: externalRingUniforms = {
+        time: {value: 10.0},
+        stretch: {value: new THREE.Vector3(290, 40, 180)}
+    },
+    vertexShader: document.getElementById('vertexShaderDEBRIS').textContent,
+    fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,
+})
 
-     debrisMaterials.push( new THREE.ShaderMaterial({
-        uniforms: debrisUniformss[i],
-        vertexShader: document.getElementById('vertexShaderDEBRIS2').textContent,
-        fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,
-    })
-    )
-    absteroids.push( new THREE.Mesh(  new THREE.SphereGeometry( 1 ), debrisMaterials[i] ) );
-
-    absteroids[i].position.x = 0;
-    absteroids[i].position.y = 0;
-    absteroids[i].position.z = 0;
-    scene.add( absteroids[i] );
-
-}
-moveSubjectTo(camera, 190, 190, 700, 0);
-// __________________________________________________________________________________________________________________________________
-
-
-var sunLight = new THREE.PointLight( 0xFDCC36, 1, 10000 );
-    sunLight.position.set( 0, 0, 0 );
-    scene.add(sunLight);
-
-var saturn = new THREE.Mesh( new THREE.SphereBufferGeometry( 100, 32, 32 ), saturnMaterial);
+var internalRingMaterial= new THREE.ShaderMaterial({
+    uniforms: internalRingUniforms = {
+        time: {value: 10.0},
+        stretch: {value: new THREE.Vector3(190, 30, 135)}
+    },
+    vertexShader: document.getElementById('vertexShaderDEBRIS').textContent,
+    fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,
+})
+// __________________________________________________________ End Rings Material
+// _________________________________________________________________________________ Begin Creating Objects
+var externalRing = new THREE.Points(ringGeometry, externalRingMaterial);
+    internalRing = new THREE.Points(ringGeometry.clone(), internalRingMaterial);
+    saturn = new THREE.Mesh( new THREE.SphereBufferGeometry( 100, 64, 64 ), saturnMaterial);
+    titano = new THREE.Mesh( new THREE.SphereBufferGeometry( 20, 64, 64 ), titanoMaterial);
+    plane = new THREE.GridHelper(1000, 1000);
+// __________________________________________________________ EndCreating Objects
 scene.add( saturn );
+scene.add(internalRing);
+scene.add(externalRing);
+scene.add( titano );
 
-// __________________________________________________________________________________________________________________________________
 
-//scene.add( new THREE.GridHelper(1000, 1000) );
+
+//ASSE X
+var lineGeometry = new THREE.Geometry();
+lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+lineGeometry.vertices.push(new THREE.Vector3(200, 0, 0));
+var axisX = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color: 0xdd3333, linewidth: 10 }));
+//ASSE Y
+var lineGeometry = new THREE.Geometry();
+lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+lineGeometry.vertices.push(new THREE.Vector3(0, 200, 0));
+var axisY = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color: 0x33dd33, linewidth: 10 }));
+//ASSE Z
+var lineGeometry = new THREE.Geometry();
+lineGeometry.vertices.push(new THREE.Vector3(0, 0, 0));
+lineGeometry.vertices.push(new THREE.Vector3(0, 0, 200));
+var axisZ = new THREE.Line(lineGeometry, new THREE.LineBasicMaterial({ color: 0x3333dd, linewidth: 10 }));
 
 //RENDER LOOP
 render();

@@ -1,0 +1,54 @@
+body { 
+	cursor: pointer;
+	margin: 0; 	
+	overflow: hidden;
+	background-image: url('../img/backgrounds/background2.jpg');
+	color: #fff;
+	background-repeat: no-repeat;
+	background-position: center center;
+	background-size: 100% 100%;
+}
+canvas { 
+	width: 100%; 
+	height: 100% 
+}
+#cameraPos {
+	margin: 4px;
+}
+.selector {
+	justify-content: center;
+	position: absolute; 
+	background: rgba(250, 249, 255, 0.2); 
+	left: 80%; 
+	top: 2%;
+	border-radius: 3px;
+}
+#infos {
+	display: flex; 
+	flex-direction: column; 
+	position: absolute; 
+	background: rgba(250, 249, 255, 0.2); 
+	height: 30%; 
+	width: 30%; 
+	left: 69%; 
+	top: 60%; 
+	padding: 1px;
+	border-radius: 3px; 
+	-webkit-transition: all .6s ease-in-out; /* Safari */
+    transition: all .6s ease-in-out;
+}
+.hide {
+	left: 99% !important;
+}
+#infosContent{
+	position: relative;
+	margin-left: 4px;
+	margin-right: 4px;
+	overflow: scroll;
+}
+#infosHide{
+	cursor: pointer;
+}
+#statsDOM{
+	margin: 4px;
+}
