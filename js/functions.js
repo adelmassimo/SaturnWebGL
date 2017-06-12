@@ -4,7 +4,7 @@ var clock = new THREE.Clock();
 // - Globas
     time = 0;
     speed = 0;
-    n = 2; //debris for ring
+    n = 200000; //debris for ring
 // - Renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -34,11 +34,12 @@ function render() {
 
     //saturn.rotation.y -= speed ;
 
-    time = clock.getDelta() * 0.00001;
+    time += 0.00001;
+
     saturnUniforms.time.value += 0.3*speed;
-    titanoUniforms.time.value += 0.6*speed;
+    titanoUniforms.time.value += 0.8*speed;
     internalRingUniforms.time.value += 0.5*speed;
-    externalRingUniforms.time.value += 0.5*speed;
+    externalRingUniforms.time.value += 0.55*speed;
     
     stats.end();
 

@@ -2,11 +2,17 @@ var speedController = document.getElementById("speedSelector");
 	bgController = document.getElementById("bgSelector");
 	planeIsOn = false;
 	axisAreOn = false;
-	background = 0;
+	background = 1;
+function init(){
+		document.getElementById('particlesInfo').textContent ="Particles per ring: "+n;
+		updateCameraInfo();
+		selectSpeed();
+		hideInfos();
+		changeBackground();
+}
 
 function updateCameraInfo(){
 	document.getElementById('cameraPos').textContent = "Camera Position: ("+Math.round(camera.position.x)+", "+Math.round(camera.position.y)+", "+Math.round(camera.position.z)+")";
-	document.getElementById('particlesInfo').textContent ="Particles per ring: "+n;
 }
 
 function selectSpeed(){
@@ -56,7 +62,6 @@ function changeBackground(){
 			document.getElementById("body").setAttribute("style", "background-image: url('./img/backgrounds/background2.jpg');color:#fff");
 			break;
 	}
-	console.log(background);
 	background = (background+1)%3;
 }
 

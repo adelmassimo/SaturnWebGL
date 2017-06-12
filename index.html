@@ -29,7 +29,7 @@
 			Saturn's interior is probably composed of a core of iron–nickel and rock (silicon and oxygen compounds). This core is surrounded by a deep layer of metallic hydrogen, an intermediate layer of liquid hydrogen and liquid helium, and finally outside the Frenkel line a gaseous outer layer.[16] Saturn has a pale yellow hue due to ammonia crystals in its upper atmosphere. Electrical current within the metallic hydrogen layer is thought to give rise to Saturn's planetary magnetic field, which is weaker than Earth's, but has a magnetic moment 580 times that of Earth due to Saturn's larger size. Saturn's magnetic field strength is around one-twentieth of Jupiter's.[17] The outer atmosphere is generally bland and lacking in contrast, although long-lived features can appear. Wind speeds on Saturn can reach 1,800 km/h (500 m/s), higher than on Jupiter, but not as high as those on Neptune.[18]
 		</p>
 	</div>
-	<body id="body" onload="selectSpeed()">
+	<body id="body" onload="init()">
 		
 		<script type="x-shader/x-vertex" id="vertexShaderSaturn">
 		uniform float delta;
@@ -43,7 +43,7 @@
 		void main() 
 		{	
 		    vUv = uv;
-		    vUv.x = mod(vUv.x + time/5.0, 1.50);
+		    //vUv.x = mod(vUv.x + time/1.0, 1.0);
 		    vec3 newPosition = position;
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
 			culo = vec4(newPosition, 1.0);
@@ -60,10 +60,10 @@
 
 			vec4 theColor = baseColor ;
 			theColor.a = 1.0;
-			if(culo.z < 0.0){
-				theColor.x += culo.z/20.0;
-				theColor.y += culo.z/20.0;
-				theColor.z += culo.z/20.0;
+			if(culo.z < 0.0 && true){
+				theColor.x += culo.z/80.0;
+				theColor.y += culo.z/80.0;
+				theColor.z += culo.z/80.0;
 			}
 			gl_FragColor = theColor;
 		}
@@ -106,6 +106,9 @@
 					gl_FragColor = vec4(0.7, 0.7, 0.65, 0.90);
 				else
 					gl_FragColor = vec4(0.58, 0.49, 0.45, 0.90);
+				if(vUv.z > 0.0)
+					gl_FragColor = gl_FragColor - vec4(vUv.zzz*0.0076, 0.0);
+
 			}
 		</script>
 		
