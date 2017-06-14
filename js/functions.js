@@ -4,7 +4,7 @@ var clock = new THREE.Clock();
 // - Globas
     time = 0;
     speed = 0;
-    n = 200000; //debris for ring
+    n = 2000000; //debris for ring
 // - Renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -15,9 +15,9 @@ var clock = new THREE.Clock();
     near = 1;
     far = 20000;
     camera = new THREE.PerspectiveCamera( 75, ratio, near, far );
-        camera.position.x = -190;
-        camera.position.y = 150;
-        camera.position.z = 305;
+        camera.position.x = -285;
+        camera.position.y = 15;
+        camera.position.z = -115;
 // -Texture
     textureLoader = new THREE.TextureLoader();
     controls = new THREE.OrbitControls( camera, renderer.domElement );
@@ -38,7 +38,7 @@ function render() {
 
     saturnUniforms.time.value += 0.3*speed;
     titanoUniforms.time.value += 0.8*speed;
-    internalRingUniforms.time.value += 0.5*speed;
+    internalRingUniforms.time.value += 0.55*speed;
     externalRingUniforms.time.value += 0.55*speed;
     
     stats.end();
