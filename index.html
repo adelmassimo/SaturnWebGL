@@ -15,8 +15,9 @@
 	<div class="selector" id="statsDiv">
 		<h4 id="cameraPos">camera Position:</h4>
 		<h4 id="particlesInfo">Particles per ring: </h4>
-		speed<input oninput="selectSpeed()" id="speedSelector" type="range" id="myRange" value="20"><br>
-		bkg<input oninput="selectBg()" id="bgSelector" type="range" id="myRange" value="100"><br>
+		particles<input oninput="selectParticles()" id="particlesSelector" type="range" value="100"><br>
+		speed<input oninput="selectSpeed()" id="speedSelector" type="range" value="20"><br>
+		bkg<input oninput="selectBg()" id="bgSelector" type="range" value="100"><br>
 		<button onclick="hidePlane()"> Plane </button>
 		<button onclick="hideAxis()"> Axis </button>
 		<button onclick="changeBackground()"> bkg </button>
@@ -45,7 +46,7 @@
 		    vUv = uv;
 		    vec3 newPosition = position;
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-			currentPostion =  projectionMatrix * vec4(newPosition, 1.0);
+			currentPostion =  projectionMatrix * modelMatrix * vec4(newPosition, 1.0);
 		}
 		</script>
 		<script type="x-shader/x-fragment" id="fragmentShaderSaturn">
@@ -101,7 +102,7 @@
 				gl_FragColor = vec4(0.7, 0.7, 0.65, 0.90);
 			else
 				gl_FragColor = vec4(0.58, 0.49, 0.45, 0.90);
-			if(vUv.z > 0.0 && abs(vUv.x)<64.0)
+			if(vUv.z > 0.0)
 				gl_FragColor = gl_FragColor - vec4(vUv.zzz*0.0076, 0.0);
 
 		}

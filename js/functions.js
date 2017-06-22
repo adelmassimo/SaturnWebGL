@@ -4,7 +4,7 @@ var clock = new THREE.Clock();
 // - Globas
     time = 0;
     speed = 0;
-    n = 3000000; //debris for ring
+    n = 3000; //debris for ring
 // - Renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -32,7 +32,7 @@ function render() {
 	renderer.render(scene, camera);
 	requestAnimationFrame(render);
 
-    //saturn.rotation.y -= speed ;
+    saturn.rotation.y -= speed ;
 
     time += 0.00001;
 
