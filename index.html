@@ -2,7 +2,7 @@
 	<head>
 		<meta charset="UTF-8">
 		<script src="js/functions.js"></script>
-		<title>Saturn THREE.js </title>
+		<title>Saturn | Adel Massimo Ramadan</title>
 		<link rel="stylesheet" type="text/css" href="css/style.css">
 		
 	</head>
@@ -15,21 +15,15 @@
 	<div class="selector" id="statsDiv">
 		<h4 id="cameraPos">camera Position:</h4>
 		<h4 id="particlesInfo">Particles per ring: </h4>
+		<hr>
 		particles<input oninput="selectParticles()" id="particlesSelector" type="range" value="100"><br>
 		speed<input oninput="selectSpeed()" id="speedSelector" type="range" value="20"><br>
-		bkg<input oninput="selectBg()" id="bgSelector" type="range" value="100"><br>
+		bkg-tone<input oninput="selectBg()" id="bgSelector" type="range" value="100"><hr>
 		<button onclick="hidePlane()"> Plane </button>
 		<button onclick="hideAxis()"> Axis </button>
 		<button onclick="changeBackground()"> bkg </button>
 	</div>
-	<div id="infos">
-		<span id="infosHide" onclick="hideInfos()">▶</span>
-		<h3 id="infosTitle">Saturn</h3>
-		<p id="infosContent"> 
-			Saturn is the sixth planet from the Sun and the second-largest in the Solar System, after Jupiter. It is a gas giant with an average radius about nine times that of Earth.[11][12] Although it has only one-eighth the average density of Earth, with its larger volume Saturn is just over 95 times more massive.[13][14][15] Saturn is named after the Roman god of agriculture; its astronomical symbol (♄) represents the god's sickle.<br>
-			Saturn's interior is probably composed of a core of iron–nickel and rock (silicon and oxygen compounds). This core is surrounded by a deep layer of metallic hydrogen, an intermediate layer of liquid hydrogen and liquid helium, and finally outside the Frenkel line a gaseous outer layer.[16] Saturn has a pale yellow hue due to ammonia crystals in its upper atmosphere. Electrical current within the metallic hydrogen layer is thought to give rise to Saturn's planetary magnetic field, which is weaker than Earth's, but has a magnetic moment 580 times that of Earth due to Saturn's larger size. Saturn's magnetic field strength is around one-twentieth of Jupiter's.[17] The outer atmosphere is generally bland and lacking in contrast, although long-lived features can appear. Wind speeds on Saturn can reach 1,800 km/h (500 m/s), higher than on Jupiter, but not as high as those on Neptune.[18]
-		</p>
-	</div>
+
 	<body id="body" onload="init()">
 		
 		<script type="x-shader/x-vertex" id="vertexShaderSaturn">

@@ -1,13 +1,14 @@
 var speedController = document.getElementById("speedSelector");
 	bgController = document.getElementById("bgSelector");
+	particlesController = document.getElementById("particlesSelector");
 	planeIsOn = false;
 	axisAreOn = false;
 	background = 1;
+
 function init(){
 		document.getElementById('particlesInfo').textContent ="Particles per ring: "+n;
 		updateCameraInfo();
 		selectSpeed();
-		hideInfos();
 		changeBackground();
 }
 
@@ -19,19 +20,6 @@ function selectSpeed(){
 	speed = (speedSelector.value != 0)?Math.exp(-(100-speedSelector.value)/10):0;
 }
 
-function hideInfos(){
-	var infoW = document.getElementById('infos');
-	var infoWH = document.getElementById('infosHide');
-
-	if(infos.getAttribute('class') == 'hide'){
-		infoWH.textContent = '▶︎';		
-		infos.setAttribute('class','null');
-	}
-	else{
-		infoWH.textContent = '◀︎';
-		infos.setAttribute('class','hide');
-	}
-}
 
 
 function hidePlane(){
@@ -50,6 +38,19 @@ function selectBg(){
 	c = Math.floor(bgSelector.value*2.55);
 	document.getElementById("body").setAttribute("style", "background: rgb("+c+","+c+","+c+")");
 }
+
+function selectParticles(){
+	c = particlesSelector.value/100;
+	m = Math.floor(n*c*3);
+	internalRingGeometry.removeAttribute('position')
+                        .addAttribute('position', new THREE.BufferAttribute(new Float32Array(m), 3));
+    externalRingGeometry.removeAttribute('position')
+                        .addAttribute('position', new THREE.BufferAttribute(new Float32Array(m), 3));
+	
+	document.getElementById('particlesInfo').textContent ="Particles per ring: "+m;
+}
+
+
 function changeBackground(){
 	switch(background){
 		case 0:

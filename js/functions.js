@@ -1,10 +1,12 @@
 //CONTROLS
+var internalRingGeometry = new THREE.BufferGeometry();
+var externalRingGeometry = new THREE.BufferGeometry();
 
 var clock = new THREE.Clock();
 // - Globas
     time = 0;
     speed = 0;
-    n = 3000; //debris for ring
+    n = 1000000; //debris for ring
 // - Renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     	renderer.setSize( window.innerWidth, window.innerHeight );
@@ -45,13 +47,3 @@ function render() {
 
 } 
 
-document.body.onkeydown = function(event){
-    event = event || window.event;
-    var keycode = event.charCode || event.keyCode;
-    var speed = 0;
-    switch(keycode){
-    	case(32): // space
-    		hideInfos();
-    		break;
-    }
-}
