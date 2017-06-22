@@ -45,7 +45,7 @@
 		    vUv = uv;
 		    vec3 newPosition = position;
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(newPosition, 1.0);
-			currentPostion = vec4(newPosition, 1.0);
+			currentPostion =  projectionMatrix * vec4(newPosition, 1.0);
 		}
 		</script>
 		<script type="x-shader/x-fragment" id="fragmentShaderSaturn">
@@ -59,10 +59,10 @@
 
 			vec4 theColor = baseColor ;
 			theColor.a = 1.0;
-			if(currentPostion.z < 0.0){
-				theColor.x += currentPostion.z/80.0;
-				theColor.y += currentPostion.z/80.0;
-				theColor.z += currentPostion.z/80.0;
+			if(currentPostion.z > 0.0){
+				theColor.x -= currentPostion.z/80.0;
+				theColor.y -= currentPostion.z/80.0;
+				theColor.z -= currentPostion.z/80.0;
 			}
 			gl_FragColor = theColor;
 		}
@@ -88,7 +88,7 @@
 		    
 			gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
 		    
-		    vUv = projectionMatrix  * vec4(p, 1.0);
+		    vUv = projectionMatrix * vec4(p, 1.0);
 		    gl_PointSize = 1.0;
 		}
 		</script>
@@ -101,7 +101,7 @@
 				gl_FragColor = vec4(0.7, 0.7, 0.65, 0.90);
 			else
 				gl_FragColor = vec4(0.58, 0.49, 0.45, 0.90);
-			if(vUv.z > 0.0)
+			if(vUv.z > 0.0 && abs(vUv.x)<64.0)
 				gl_FragColor = gl_FragColor - vec4(vUv.zzz*0.0076, 0.0);
 
 		}

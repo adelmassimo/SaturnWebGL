@@ -4,7 +4,7 @@ var clock = new THREE.Clock();
 // - Globas
     time = 0;
     speed = 0;
-    n = 2000000; //debris for ring
+    n = 3000000; //debris for ring
 // - Renderer
     renderer = new THREE.WebGLRenderer({ alpha: true });
     	renderer.setSize( window.innerWidth, window.innerHeight );
