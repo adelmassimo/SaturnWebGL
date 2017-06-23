@@ -1,7 +1,6 @@
-# Saturn System - WebGL 
-![Image of Yaktocat](https://github.com/adelmassimo/SaturnWebGL/img/preview.png)
+# PARTICLE REPRODUCTION OF SATURN'S SYSTEM - THREE.js & WebGL
+![Image of resulting scene](img/preview.png)
 
-## PARTICLE REPRODUCTION OF SATURN'S SYSTEM
 
 #### Aims
 * Create a particle-system representation of Saturn Rings. 
