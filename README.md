@@ -43,5 +43,5 @@ On this context we apply some semplifications on this enormous system:
 
 ### Performances
 It’s not easy to evaluate performances of a system strongly based on hardware design and software optimization. It’s only possible make some considerations:
-* Using a MacBook Pro1 and Safari as reference, were observed results below:
+* Using a MacBook Pro Retina (2,4 GHz Intel Core i5, Intel Iris 1536 MB) and Safari as reference, were observed results below:
 ![mockup of debris orbit](img/performances.png)
