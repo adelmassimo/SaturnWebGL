@@ -22,6 +22,7 @@
 		<button onclick="hidePlane()"> Plane </button>
 		<button onclick="hideAxis()"> Axis </button>
 		<button onclick="changeBackground()"> bkg </button>
+		<button onclick="changeShadow()"> shadow-type </button>
 	</div>
 
 	<body id="body" onload="init()">
@@ -91,17 +92,19 @@
 		varying vec4 vUv;
 		varying vec2 offset;
 
+		uniform float shadowType;
+
 		void main() {
 			if( abs(offset.x) >= 30.0 || abs(offset.y) >= 10.0)
 				gl_FragColor = vec4(0.7, 0.7, 0.65, 0.90);
 			else
 				gl_FragColor = vec4(0.58, 0.49, 0.45, 0.90);
-			if(vUv.z > 0.0)
+			
+			if((shadowType == 0.0 && vUv.z > 0.0) || (shadowType == 1.0 && vUv.z > 0.0 && abs(vUv.x) < 64.0))
 				gl_FragColor = gl_FragColor - vec4(vUv.zzz*0.0076, 0.0);
 
 		}
 		</script>
-		
 		<script type="x-shader/x-vertex" id="vertexShaderTITANO">
 		uniform float delta;
 		uniform float radius;

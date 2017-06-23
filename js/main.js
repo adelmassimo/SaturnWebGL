@@ -1,5 +1,10 @@
 document.body.appendChild( renderer.domElement );
 
+var internalRingGeometry = new THREE.BufferGeometry();
+var externalRingGeometry = new THREE.BufferGeometry();
+var debrisFragmentShader = document.getElementById('fragmentShaderDEBRIS').textContent;
+
+
 // _________________________________________________________________________________ Begin Saturn Material
 var saturnMaterial = new THREE.ShaderMaterial({
     uniforms: saturnUniforms = {
@@ -44,7 +49,8 @@ externalRingGeometry = internalRingGeometry.clone();
 var externalRingMaterial= new THREE.ShaderMaterial({
     uniforms: externalRingUniforms = {
         time: {value: 10.0},
-        stretch: {value: new THREE.Vector3(290, 40, 180)}
+        stretch: {value: new THREE.Vector3(290, 40, 180)},
+        shadowType: {value: shadowType}
     },
     vertexShader: document.getElementById('vertexShaderDEBRIS').textContent,
     fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,
@@ -53,7 +59,8 @@ var externalRingMaterial= new THREE.ShaderMaterial({
 var internalRingMaterial= new THREE.ShaderMaterial({
     uniforms: internalRingUniforms = {
         time: {value: 10.0},
-        stretch: {value: new THREE.Vector3(190, 30, 135)}
+        stretch: {value: new THREE.Vector3(190, 30, 135)},
+        shadowType: {value: 1.0}
     },
     vertexShader: document.getElementById('vertexShaderDEBRIS').textContent,
     fragmentShader: document.getElementById('fragmentShaderDEBRIS').textContent,

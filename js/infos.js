@@ -20,8 +20,6 @@ function selectSpeed(){
 	speed = (speedSelector.value != 0)?Math.exp(-(100-speedSelector.value)/10):0;
 }
 
-
-
 function hidePlane(){
 	if(planeIsOn){
 		scene.remove(plane);
@@ -33,10 +31,13 @@ function hidePlane(){
 	}
 }
 
-
 function selectBg(){
 	c = Math.floor(bgSelector.value*2.55);
 	document.getElementById("body").setAttribute("style", "background: rgb("+c+","+c+","+c+")");
+}
+
+function changeShadow(){
+	shadowType = (shadowType + 1)%2;
 }
 
 function selectParticles(){
@@ -49,7 +50,6 @@ function selectParticles(){
 	
 	document.getElementById('particlesInfo').textContent ="Particles per ring: "+m;
 }
-
 
 function changeBackground(){
 	switch(background){
@@ -80,8 +80,6 @@ function hideAxis(){
 		axisAreOn = true;
 	}
 }
-
-
 
 stats = new Stats();
 

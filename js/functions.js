@@ -1,9 +1,7 @@
 //CONTROLS
-var internalRingGeometry = new THREE.BufferGeometry();
-var externalRingGeometry = new THREE.BufferGeometry();
-
 var clock = new THREE.Clock();
 // - Globas
+    shadowType = 0;
     time = 0;
     speed = 0;
     n = 1000000; //debris for ring
@@ -42,6 +40,9 @@ function render() {
     titanoUniforms.time.value += 0.8*speed;
     internalRingUniforms.time.value += 0.55*speed;
     externalRingUniforms.time.value += 0.55*speed;
+
+    internalRingUniforms.shadowType.value = shadowType;
+    externalRingUniforms.shadowType.value = shadowType;
     
     stats.end();
 
