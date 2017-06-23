@@ -1,5 +1,5 @@
 # Saturn System - WebGL 
-![Image of Yaktocat](https://adelmassimo.github.com/SaturnWebGL/img/preview.png)
+![Image of Yaktocat](https://github.com/adelmassimo/SaturnWebGL/img/preview.png)
 
 ## PARTICLE REPRODUCTION OF SATURN'S SYSTEM
 
